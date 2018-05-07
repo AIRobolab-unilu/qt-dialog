@@ -27,8 +27,21 @@ Say what the step will be
 WIP
 ```
 
+### Using
 
-Little demo
+Before using it you need to update your creditentials in your system environment.
+This can be done like that :
+
+```
+export WATSON_USER_STT="{you user}"
+export WATSON_PASS_STT="{you pass}"
+
+export WATSON_USER_NLP="{you user}" #In most cases the same as WATSON_USER_STT
+export WATSON_PASS_NLP="{you pass}"
+```
+
+### Little demo
+
 WIP
 
 ## Running the tests
@@ -47,7 +60,7 @@ WIP
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
 
 ## Acknowledgments
 
