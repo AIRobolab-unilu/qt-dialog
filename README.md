@@ -34,10 +34,10 @@ This can be done like that :
 
 ```
 export WATSON_USER_STT="{your user}"
-export WATSON_PASS_STT="{your pass}"
+export WATSON_PASS_STT="{your password}"
 
 export WATSON_USER_NLP="{your user}" #In most cases the same as WATSON_USER_STT
-export WATSON_PASS_NLP="{your pass}"
+export WATSON_PASS_NLP="{your password}"
 ```
 
 ### Little demo
@@ -50,9 +50,12 @@ WIP
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [PyAudio](http://people.csail.mit.edu/hubert/pyaudio/) - The software used to record audio input
+* [py-webrtcvad](https://github.com/wiseman/py-webrtcvad) -  WebRTC Voice Activity Detector interface for Python
+* [svox-tts](https://github.com/ScazLab/svox_tts) -  A ROS wrapper for the svox-pico TTS Engine
+* [pyttsx](https://github.com/RapidWareTech/pyttsx) -  Cross-platform Python wrapper for text-to-speech synthesis
+* [python-vad](https://github.com/wangshub/python-vad) -  Python code to voice activity detection
+* [Watson STT](https://www.ibm.com/watson/services/speech-to-text/) -  Speech-To-Text from Watson - IBM
 
 ## Authors
 
@@ -65,3 +68,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 WIP
+Thanks to [PurpleBooth](https://github.com/PurpleBooth) for the template for this readme.
