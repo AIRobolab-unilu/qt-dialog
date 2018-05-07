@@ -9,6 +9,7 @@ from comprehension_module import ComprehensionModule
 import subprocess
 import constants as cst
 import contextlib
+from os import environ
 
 class WatsonNLP(ComprehensionModule):
 
