@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
 import json
-from watson_developer_cloud import NaturalLanguageUnderstandingV1
-from watson_developer_cloud.natural_language_understanding_v1 \
-import Features, EntitiesOptions, KeywordsOptions
 from comprehension_module import ComprehensionModule
 
 import subprocess
@@ -20,14 +17,7 @@ class WatsonNLP(ComprehensionModule):
         self.passwd = environ['WATSON_PASS_NLP']
 
 
-        """self.natural_language_understanding = NaturalLanguageUnderstandingV1(
-              username=self.user,
-              password=self.passwd,
-              version='2018-03-16')
         
-        
-        self.headers = {'Accept': 'text/html,application/xhtml+xmAccept-Charset'}"""
-
     def comprehend(self, text):
 
         #TODO: Construct Json from scratch with parameters insted of relying on a squelet

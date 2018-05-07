@@ -1,0 +1,2 @@
+python -m pip.__main__ install webrtcvad
+
