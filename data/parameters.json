@@ -1,0 +1,15 @@
+{
+  "text": "",
+  "features": {
+    "entities": {
+      "emotion": true,
+      "sentiment": true,
+      "limit": 10
+    },
+    "keywords": {
+      "emotion": true,
+      "sentiment": true,
+      "limit": 10
+    }
+  }
+}

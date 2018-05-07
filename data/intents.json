@@ -1,0 +1,19 @@
+{
+  "intents": {
+    "0": {"actions": [0], "answer":"I am QT Robot"},
+    "1": {"actions": [0], "answer":"I am QT"},
+    "2": {"actions": [0], "answer":"I am QT"},
+    "3": {"actions": [0], "answer":"I am QT"},
+    "4": {"actions": [0], "answer":"I am QT"},
+    "5": {"actions": [0], "answer":"$Timer~first_call"},
+    "6": {"actions": [0], "answer":"I am QT"},
+    "7": {"actions": [0], "answer":"$Standard~joke"},
+    "8": {"actions": [0], "answer":"of course let's start"},
+    "9": {"actions": [0], "answer":"i am not alive by definition but we can enjoy eachother"},
+    "10": {"actions": [0], "answer":"$Standard~repeat"},
+    "11": {"actions": [0], "answer":"$Standard~what_heard"},
+    "12": {"actions": [0], "answer":"$Standard~time"},
+    "13": {"actions": [0], "answer":"$Standard~date"},
+    "14": {"actions": [0], "answer":"$Standard~reset"}
+  }
+}

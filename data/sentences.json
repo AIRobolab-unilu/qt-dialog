@@ -1,0 +1,38 @@
+{
+  "sentences": {
+    	"who are you": 0,
+	    "what are you": 0,
+	    "what's your name": 0,
+	    "what is your name": 0,
+	    "what did i say": 1,
+	    "repeat": 2,
+	    "move your head": 3,
+	    "turn your head": 4,
+	    "set an alarm": 6,
+	    "set the alarm": 6,
+	    "tell me a joke": 7,
+	    "tell a joke": 7,
+	    "say a joke": 7,
+	    "can we be friends": 8,
+	    "are you alive": 9,
+	    "repeat": 10,
+	    "what did you say": 10,
+	    "what did you understand": 11,
+	    "what did you hear": 11,
+	    "what did i say": 11,
+	    "what time is it": 12,
+	    "what is the date": 13,
+	    "reset": 14,
+	    "remove a list": 15,
+	    "erase a list": 15,
+	    "delete a list": 15
+	},
+	"backup":{
+		"create a timer": 5,
+	    "create the timer": 5,
+	    "set a timer": 5,
+	    "set the timer": 5,
+	    "create a list": 14,
+	    "make a list": 14
+	}
+}

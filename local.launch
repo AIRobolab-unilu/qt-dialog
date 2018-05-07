@@ -1,0 +1,10 @@
+<launch> 
+
+	<include file="$(find svox_tts)/launch/svox_tts.launch"/>
+
+  <node name="tts" pkg="social_robotics" type="tts_node.py" output="screen" cwd="node"/>
+  <node name="stt" pkg="social_robotics" type="stt_node.py" output="screen" cwd="node"/>
+  <node name="nlp" pkg="social_robotics" type="nlp_node.py" output="screen" cwd="node"/>
+  <node name="vad" pkg="social_robotics" type="vad_node.py" output="screen" cwd="node"/>
+  <node name="dialog" pkg="social_robotics" type="dialog_node.py" output="screen" cwd="node"/>
+</launch>

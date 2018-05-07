@@ -1,0 +1,15 @@
+<launch> 
+  
+  
+  <node name="nlp" pkg="social_robotics" type="nlp_node.py" output="screen" cwd="node"/>
+  
+  <node name="dialog" pkg="social_robotics" type="dialog_node.py" output="screen" cwd="node"/>
+
+
+  <group>
+
+        <machine name="qt_robot" address="10.212.232.14" env-loader="/opt/ros/kinetic/env.sh" default="true" password="odroid"/>
+
+  </group>
+
+</launch>
