@@ -1,1 +1,1 @@
-{"text": "what's your name ", "features": {"keywords": {"emotion": true, "limit": 10, "sentiment": true}, "entities": {"emotion": true, "limit": 10, "sentiment": true}}}
+{"text": "WHAT'S YOUR NAME", "features": {"keywords": {"emotion": true, "limit": 10, "sentiment": true}, "entities": {"emotion": true, "limit": 10, "sentiment": true}}}
