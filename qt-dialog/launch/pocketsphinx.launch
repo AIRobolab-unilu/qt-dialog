@@ -1,0 +1,17 @@
+<launch> 
+
+	<include file="$(find svox_tts)/launch/svox_tts.launch"/>
+	
+	<include file="$(find pocketsphinx)/launch/asr.launch"> 
+		<arg name="dict" value="/home/airobolab/catkin_ws/src/pocketsphinx/data/3067.dic"/>
+		<arg name="gram" value="/home/airobolab/catkin_ws/src/pocketsphinx/data/3067"/>
+		<arg name="rule" value="rule"/>
+		<arg name="grammar" value="asr"/>
+	</include>
+
+  <node name="emotions" pkg="qt_face" type="face_duration.py" output="screen" cwd="node"/>
+  <node name="tts" pkg="qt-dialog" type="tts_node.py" output="screen" cwd="node"/>
+  <node name="nlp" pkg="qt-dialog" type="nlp_node.py" output="screen" cwd="node"/>
+  <node name="dialog" pkg="qt-dialog" type="dialog_node.py" output="screen" cwd="node"/>
+
+</launch>

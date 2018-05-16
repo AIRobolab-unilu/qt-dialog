@@ -1,4 +1,0 @@
-<launch>
-  <node name="dialog" pkg="social_robotics" type="dialog_node.py" output="screen" cwd="node"/>
-  <node name="tests" pkg="social_robotics" type="tests.py" output="screen" cwd="node"/>
-</launch>

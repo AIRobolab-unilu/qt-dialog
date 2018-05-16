@@ -1,0 +1,6 @@
+<launch> 
+
+	<include file="$(find svox_tts)/launch/svox_tts.launch"/>
+
+  <node name="tts" pkg="qt-dialog" type="tts_node.py" output="screen" cwd="node"/>
+</launch>

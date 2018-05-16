@@ -1,0 +1,24 @@
+{
+  "actions": {
+    "0": {"face": "neutral", "gesture": 0, "voice": 0},
+    "1": {"face": "smile", "gesture": 0, "voice": 0},
+    "2": {"face": "happy", "gesture": 0, "voice": 0},
+    "3": {"face": "sad", "gesture": 0, "voice": 0},
+    "4": {"face": "afraid", "gesture": 0, "voice": 0},
+    "5": {"face": "surprise", "gesture": 0, "voice": 0},
+    "6": {"face": "talking", "gesture": 0, "voice": 0},
+    "7": {"face": "neutral_half_smile", "gesture": 0, "voice": 0},
+    "8": {"face": "happy_blinking", "gesture": 0, "voice": 0},
+    "9": {"face": "neutral_half_smile", "gesture": 0, "voice": 0},
+    "11": {"face": "disgust", "gesture": 0, "voice": 0},
+    "12": {"face": "disgusted", "gesture": 0, "voice": 0},
+    "13": {"face": "fear", "gesture": 0, "voice": 0},
+    "14": {"face": "calming_down", "gesture": 0, "voice": 0},
+    "15": {"face": "clean_teeth", "gesture": 0, "voice": 0},
+    "16": {"face": 0, "gesture": 0, "voice": 0},
+    "17": {"face": 0, "gesture": 0, "voice": 0},
+    "18": {"face": 0, "gesture": 0, "voice": 0},
+    "19": {"face": 0, "gesture": 0, "voice": 0},
+    "20": {"face": 0, "gesture": 0, "voice": 0}
+ }
+}

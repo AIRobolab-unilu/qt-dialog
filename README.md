@@ -15,6 +15,7 @@ ROS kinetic
 python2.7
 pyaudio
 webrtcvad
+pocketsphinx
 ```
 
 ### Installing
@@ -56,6 +57,7 @@ WIP
 * [pyttsx](https://github.com/RapidWareTech/pyttsx) -  Cross-platform Python wrapper for text-to-speech synthesis
 * [python-vad](https://github.com/wangshub/python-vad) -  Python code to voice activity detection
 * [Watson STT](https://www.ibm.com/watson/services/speech-to-text/) -  Speech-To-Text from Watson - IBM
+* [pocketsphinx](https://github.com/Pankaj-Baranwal/pocketsphinx) -  Extension of pocketsphinx in the ROS world
 
 ## Authors
 
@@ -69,3 +71,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 WIP
 Thanks to [PurpleBooth](https://github.com/PurpleBooth) for the template for this readme.
+
