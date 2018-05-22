@@ -43,7 +43,7 @@ class VADWebRTCV1(WebRTC) :
         tmp = []
 
         for i in range(0, int(self.rate / self.chunk * self.record_seconds)):
-            data = self.stream.read(self.chunk)
+            data = self.observer.record(self.stream, self.chunk)
             tmp.append(data)
 
         print("* done recording")

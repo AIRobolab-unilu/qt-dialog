@@ -58,6 +58,7 @@ WIP
 * [python-vad](https://github.com/wangshub/python-vad) -  Python code to voice activity detection
 * [Watson STT](https://www.ibm.com/watson/services/speech-to-text/) -  Speech-To-Text from Watson - IBM
 * [pocketsphinx](https://github.com/Pankaj-Baranwal/pocketsphinx) -  Extension of pocketsphinx in the ROS world
+* [JSGF Tools](https://github.com/syntactic/JSGFTools) -  Used to generate strings from a JSGF grammar
 
 ## Authors
 

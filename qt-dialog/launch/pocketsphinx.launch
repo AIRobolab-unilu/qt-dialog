@@ -1,5 +1,6 @@
 <launch> 
 
+	<param name="vad" value="pocketsphinx" />
 	<include file="$(find svox_tts)/launch/svox_tts.launch"/>
 	
 	<include file="$(find pocketsphinx)/launch/asr.launch"> 

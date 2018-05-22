@@ -8,6 +8,7 @@ Requirements:
 import rospy
 from std_msgs.msg import Bool
 
+
 import webrtcvad
 import collections
 import sys
@@ -22,6 +23,8 @@ import time
 
 from vad_webrtc import WebRTC
 from vad_listener import VADListener
+
+
 
 class VADWebRTCV2(WebRTC) :
 
@@ -87,7 +90,15 @@ class VADWebRTCV2(WebRTC) :
                     ring_buffer.clear()
                     break
 
-                chunk = self.stream.read(self.chunk)
+                chunk = self.observer.record(self.stream, self.chunk)
+                #chunk = self.stream.read(self.chunk)
+                if chunk is None:
+                    print None
+                    continue
+
+
+                #print type(chunk)
+                
                 # add WangS
                 raw_data.extend(array('h', chunk))
                 index += self.chunk

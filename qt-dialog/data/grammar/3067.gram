@@ -7,9 +7,9 @@
 grammar asr;
 public <rule> =  (<a> | <b> | <c> | <d> | <e> | <f> | <g> | <h> | <i> | <j> | <k> | <l> | <m> | <n> | <o> | <p> | <q> | <r> | <s> | <t> | <u>  | <v> | <w>) ;
 
-<a> = (WHO | WHAT | WHAT'S | WHAT IS) (ARE YOU | YOUR NAME);
+<a> = <question> <object>;
 <b> = (SAY | TELL) (ME | A | ME A) JOKE;
-<c> = DO YOU HAVE ANY  (BROTHER | SISTER| BROTHERS | SISTERS) OR (BROTHER | SISTER| BROTHERS | SISTERS);
+<c> = DO YOU HAVE ANY  <bro_sis> OR <bro_sis>;
 <d> = (SAY | TELL) (ME | A | ME A) JOKE;
 <e> = CAN WE BE FRIENDS;
 <f> = REPEAT | WHAT DID YOU SAY;
@@ -30,3 +30,10 @@ public <rule> =  (<a> | <b> | <c> | <d> | <e> | <f> | <g> | <h> | <i> | <j> | <k
 <u> = CAN YOU THINK;
 <v> = HOW (ARE YOU [DOING | GOING] | DO YOU FEEL) [TODAY];
 <w> = HOW IS THE DEMO GOING;
+
+<bro_sis> = BROTHER | SISTER| BROTHERS | SISTERS;
+<question> = WHO | WHAT | WHAT'S;
+
+<object> = ARE YOU | YOUR NAME;
+
+<preposition> = FROM | TO;

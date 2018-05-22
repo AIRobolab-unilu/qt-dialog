@@ -4,6 +4,7 @@ from os import path
 
 DATA_DIR = '../data'
 SCRIPTS_DIR = '../scripts'
+GRAMMAR_DIR = DATA_DIR+'/grammar'
 
 ##########################################################
 #Path to files
@@ -16,6 +17,8 @@ WATSON_NLP_SCRIPT = path.abspath(path.join(SCRIPTS_DIR, "watson_request.bash"))
 INTENTS_JSON = path.abspath(path.join(DATA_DIR, "intents.json"))
 ACTIONS_JSON = path.abspath(path.join(DATA_DIR, "actions.json"))
 SENTENCES_JSON = path.abspath(path.join(DATA_DIR, "sentences.json"))
+
+GRAMMAR_FILE = path.abspath(path.join(GRAMMAR_DIR, "tmp.gram"))
 
 JOKES_PATH = path.abspath(path.join(DATA_DIR, "jokes.txt"))
 
@@ -92,3 +95,8 @@ END1 = [
 'it was fun talking to you'
 ]
 END2 = 'our discussion lasted {} hour {} minutes and {} seconds and i understood {} sentences'
+
+
+######################
+#GRAMMAR HEADER
+GRAMMAR_HEADER = "#JSGF V1.0;\n\n/**\n * JSGF Grammar Auto Generated - Do not touch\n */\n\ngrammar asr;\npublic <rule> =  "

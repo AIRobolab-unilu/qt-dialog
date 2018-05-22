@@ -18,6 +18,9 @@ import inspect
 import time
 import sys
 import signal
+import JSFGTools.JSGFParser as parser
+import JSFGTools.JSGFGrammar as gram
+from JSFGTools.DeterministicGenerator import processRHS
 
 class Dialog():
 
@@ -79,12 +82,52 @@ class Dialog():
         #self.grammar = Grammar()
         self.punctuation = '!"#$%&()*+,-./:;<=>?@[\]^_`{|}~'
 
+        self.init_grammar()
+
         self.retry = 0
         self.counter = 0
         self.max_retry = 2
 
+    def create_grammar_file_old(self, sentence):
+
+
+
+        private_rules = []
+        public_rule = []
+
+        for s, name in self.sentences['sentences'].iteritems():
+            public_rule.append('<auto_generate_{}>'.format(name))
+            private_rules.append('<auto_generate_{}> = {};'.format(name, s))
+            
+
+        print '{} ({});\n{}'.format(cst.GRAMMAR_HEADER, ' | '.join(public_rule), '\n'.join(private_rules))
+
+
+    def create_grammar(self, sentence):
+
+        rule = 'public <auto_generate> = {};'.format(sentence)
+
+
+        #print rule
+        return rule
     def init_grammar(self):
-        pass
+
+        self.grammar = {}
+
+        for s, name in self.sentences['sentences'].iteritems():
+            lines = [self.create_grammar(s)]
+
+            grammar = parser.getGrammarObjectFromString(lines)
+            for rule in grammar.publicRules:
+                expansions = processRHS(rule.rhs)
+                for expansion in expansions:
+                    
+                    #print expansion
+
+                    self.grammar[expansion.lower()] = name
+
+        print self.grammar
+        rospy.loginfo(rospy.get_caller_id() + ' loaded {} sentences'.format(len(self.grammar)))
         #for sentence, name in self.sentences["sentence"].iteritems():
             #rule = PublicRule(str(name), Literal(sentence))
             #self.grammar.add_rule(rule)
@@ -228,7 +271,8 @@ class Dialog():
         #Save the data in case of it's not a pre-programmed sentence
         old_data = data
         
-        sentence = self.sentences['sentences'].get(data)
+        #sentence = self.sentences['sentences'].get(data)
+        sentence = self.grammar.get(data)
 
         #If there is not match, remove courtesy and try again
         data = self.remove_part(data, 'cutie', 0) #Mistood for 'QT'
@@ -243,12 +287,14 @@ class Dialog():
             
             data = self.remove_part(data, 'you', 1)
             data = self.remove_part(data, 'can', 0)
-            sentence = self.sentences['sentences'].get(data)
+            #sentence = self.sentences['sentences'].get(data)
+            sentence = self.grammar.get(data)
 
             if sentence is None:
 
                 data = self.remove_part(data, 'please', -1)
-                sentence = self.sentences['sentences'].get(data)
+                #sentence = self.sentences['sentences'].get(data)
+                sentence = self.grammar.get(data)
 
         
         if sentence is None:

@@ -5,15 +5,19 @@
  */
 
 grammar asr;
-public <rule> =  (<a> | <b> | <c> | <d> | <e> | <f> | <g> | <h> | <i> | <j> | <k> | <l> | <m> | <n> | <o> | <p> | <q> | <r> | <s> | <t> | <u>  | <v> | <w>) ;
 
-<a> = (WHO | WHAT | WHAT'S | WHAT IS) (ARE YOU | YOUR NAME);
+public <rule> = [<start_polite>] (<a> | <b> | <c> | <d> | <e> | <f> | <g> | <h> | <i> | <j> | <k> | <l> | <m> | <n> | <o> | <p> | <q> | <r> | <s> | <t> | <u>  | <v> | <w>) [<end_polite>];
+
+<start_polite> = CAN YOU;
+<end_polite> = PLEASE;
+
+<a> = <question> <object>;
 <b> = (SAY | TELL) (ME | A | ME A) JOKE;
-<c> = DO YOU HAVE ANY  (BROTHER | SISTER| BROTHERS | SISTERS) OR (BROTHER | SISTER| BROTHERS | SISTERS);
+<c> = DO YOU HAVE ANY  <bro_sis> or <bro_sis>;
 <d> = (SAY | TELL) (ME | A | ME A) JOKE;
 <e> = CAN WE BE FRIENDS;
-<f> = REPEAT | WHAT DID YOU SAY;
-<g> = WHAT DID (YOU (UNDERSTAND | HEAR) | I SAY);
+<f> = REPEAT | WHAT DID YOU (SAY | SAID);
+<g> = WHAT DID (YOU (UNDERSTAND | HEAR) | I (SAY | SAID));
 <h> = WHAT TIME IS IT;
 <i> = WHAT (IS THE DATE | DAY (ARE WE | IS IT));
 <j> = INTRODUCE YOURSELF;
@@ -30,3 +34,15 @@ public <rule> =  (<a> | <b> | <c> | <d> | <e> | <f> | <g> | <h> | <i> | <j> | <k
 <u> = CAN YOU THINK;
 <v> = HOW (ARE YOU [DOING | GOING] | DO YOU FEEL) [TODAY];
 <w> = HOW IS THE DEMO GOING;
+
+
+
+
+<bro_sis> = BROTHER | SISTER| BROTHERS | SISTERS;
+
+
+<question> = WHO | WHAT | WHAT'S;
+
+<object> = ARE YOU | YOUR NAME;
+
+<preposition> = FROM | TO;

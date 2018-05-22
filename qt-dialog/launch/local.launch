@@ -1,5 +1,6 @@
-<launch> 
+<launch>
 
+	<param name="vad" value="pyaudio" />
 	<include file="$(find svox_tts)/launch/svox_tts.launch"/>
 
   <node name="emotions" pkg="qt_face" type="face_duration.py" output="screen" cwd="node"/>
