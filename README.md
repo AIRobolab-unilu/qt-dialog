@@ -42,7 +42,12 @@ pocketsphinx
             $ sudo pip install virtualenv 
     ```
 
-    3. Create the virtual environment
+    3. Install pyaudio
+    ```bash
+            $ sudo apt-get install python-pyaudio
+    ```
+
+    4. Create the virtual environment
 
     ```bash
             $ virtualenv --system-site-packages env
@@ -51,7 +56,7 @@ pocketsphinx
 3. Install the python dependencies
 
 ```bash
-        $ pip install -r requirements.txt
+        $ sudo pip install -r requirements.txt
 ```
 
 To undo the changes with virtualenv
