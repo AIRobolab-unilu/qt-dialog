@@ -23,6 +23,8 @@ pocketsphinx
 1. Clone and cd in the qt-dialog repository
 
 ```bash
+		$ roscd 
+		$ cd ../src
         $ git clone https://github.com/AIRobolab-unilu/qt-dialog.git
         $ cd qt-dialog
 ```
@@ -64,14 +66,15 @@ pocketsphinx
 
 	2. If you do not have it, you can install it from source
 
-
 	```bash
 	        $ cd /tmp
 	        $ git clone https://github.com/requests/requests.git
 	        $ cd requests
-			$ pip install .
+	        $ pip install .
 			$ cd ..
 			$ rm -rf requests
+			$ roscd qt-dialog
+			$ cd ..
 	```
 
 4. Install the python dependencies
