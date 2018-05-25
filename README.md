@@ -42,18 +42,39 @@ pocketsphinx
             $ sudo pip install virtualenv 
     ```
 
-    3. Install pyaudio
-    ```bash
-            $ sudo apt-get install python-pyaudio
-    ```
-
-    4. Create the virtual environment
+    3. Create the virtual environment
 
     ```bash
             $ virtualenv --system-site-packages env
             $ source env/bin/activate
     ```
-3. Install the python dependencies
+
+3. Install pyaudio
+```bash
+        $ sudo apt-get install python-pyaudio
+```
+
+3. Install requests
+
+	1. If you have pipenv
+
+	```bash
+	        $ pipenv install requests
+	```
+
+	2. If you do not have it, you can install it from source
+
+
+	```bash
+	        $ cd /tmp
+	        $ git clone https://github.com/requests/requests.git
+	        $ cd requests
+			$ pip install .
+			$ cd ..
+			$ rm -rf requests
+	```
+
+4. Install the python dependencies
 
 ```bash
         $ sudo pip install -r requirements.txt
