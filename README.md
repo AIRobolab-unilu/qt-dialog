@@ -30,13 +30,19 @@ pocketsphinx
 
 2. It is recommended to use a virtual env
 
-    1 If you do not have virtual env
+	1. If you do not have pip
+
+	```bash
+            $ sudo apt-get install python-pip
+    ```
+
+    2. If you do not have virtual env
 
     ```bash
             $ sudo pip install virtualenv 
     ```
 
-    2 Create the virtual environment
+    3. Create the virtual environment
 
     ```bash
             $ virtualenv --system-site-packages env
