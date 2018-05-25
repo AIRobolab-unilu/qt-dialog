@@ -83,6 +83,14 @@ pocketsphinx
         $ sudo pip install -r requirements.txt
 ```
 
+5. Build the packages
+
+```bash
+        $ roscd
+        $ cd ..
+        $ catkin_make
+```
+
 To undo the changes with virtualenv
 
 ```bash
