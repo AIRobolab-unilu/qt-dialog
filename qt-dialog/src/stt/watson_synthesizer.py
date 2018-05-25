@@ -2,6 +2,7 @@
 import requests
 from synthesizer import Synthesizer
 from os import environ
+import rospy
 #from threading import thread
 
 class WatsonSynthesizer(Synthesizer):
@@ -13,8 +14,11 @@ class WatsonSynthesizer(Synthesizer):
 
 		#self.timeout = 10
 
-		self.user = environ['WATSON_USER_STT']
-		self.passwd = environ['WATSON_PASS_STT']
+		self.user = environ.get('WATSON_USER_STT')
+		self.passwd = environ.get('WATSON_PASS_STT')
+
+		if self.user is None or self.passwd is None:
+			raise ValueError("One of the Watson's credidentials is not set. Try 'export WATSON_USER_STT=\"xxx\"' and 'export WATSON_PASS_STT=\"xxx\"'")
 
 		self.url = 'https://stream.watsonplatform.net/speech-to-text/api/v1/recognize'
 		

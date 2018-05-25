@@ -12,17 +12,19 @@ import features
 
 from tts.speaker_pyttsx import PyTTSx
 from tts.speaker_pico import Pico
+from tts.speaker_pepper import PepperSpeech
 
 from time import sleep
 
 class TTS():
 
-    def __init__(self, tool):
+    def __init__(self):
 
         rospy.init_node('tts', anonymous=True)
 
         self.pub = rospy.Publisher('speaking', Bool, queue_size=10)
-        self.tool = tool
+        self.matches = {'pyttsx': PyTTSx, 'pico': Pico, 'pepper': PepperSpeech}
+        self.tool = self.matches[rospy.get_param('output_speaker')]()
 
         self.listener()
 
@@ -64,4 +66,4 @@ class TTS():
 
 if __name__ == '__main__':
     #TTS(PyTTSx())
-    TTS(Pico())
+    TTS()

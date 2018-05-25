@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 # license removed for brevity
 import rospy
-import pyttsx
+
+try:
+    from svox_tts.srv import Speech
+except ImportError:
+	rospy.sleep(5)
+	print 'Could not import {} from {}'.format('Speech', 'svox_tts.srv')
+
 import rosservice
-from svox_tts.srv import Speech
+
 
 class Pico():
 

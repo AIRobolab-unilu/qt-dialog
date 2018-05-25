@@ -39,7 +39,7 @@ class VADWebRTCV2(WebRTC) :
         rospy.loginfo(rospy.get_caller_id() + ' chunk size {} '.format(self.chunk))
         self.starting = False
         
-        chunk_bytes = self.chunk * 2  # 16bit = 2 bytes, PCM
+        self.chunk_bytes = self.chunk * 2  # 16bit = 2 bytes, PCM
         self.num_padding_chunks = int(padding_duration_ms / chunk_duration_ms)
         # num_windows_chunk = int(240 / chunk_duration_ms)
         self.num_windows_chunk = int(400 / chunk_duration_ms)  # 400 ms/ 30ms  ge
@@ -52,8 +52,6 @@ class VADWebRTCV2(WebRTC) :
         #rospy.on_shutdown(self.handle_int)
 
         WebRTC.__init__(self, observer)
-
-        
 
     def process_chunk(self) :
 
@@ -93,7 +91,7 @@ class VADWebRTCV2(WebRTC) :
                 chunk = self.observer.record(self.stream, self.chunk)
                 #chunk = self.stream.read(self.chunk)
                 if chunk is None:
-                    print None
+                    #print None
                     continue
 
 

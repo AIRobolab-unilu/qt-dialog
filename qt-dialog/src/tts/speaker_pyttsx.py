@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # license removed for brevity
 import rospy
-import pyttsx
+
+try:
+    import pyttsx                 
+except ImportError:
+    print 'Could not import {}'.format('pyttsx')
 
 class PyTTSx():
 

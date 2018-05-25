@@ -22,7 +22,34 @@ pocketsphinx
 
 A step by step series of examples that tell you have to get a development env running
 
-Say what the step will be
+#. Clone and cd in the qt-dialog repository
+
+    .. code-block:: bash
+
+        $ git clone git@github.com:AIRobolab-unilu/qt-dialog.git
+        $ cd qt-dialog
+
+It is recommended to use a virtual env
+
+#. Create the virtual environment
+
+    .. code-block:: bash
+
+        $ virtualenv --system-site-packages env
+        $ source env/bin/activate
+
+#. Install the python dependencies
+
+    .. code-block:: bash
+
+        $ pip install -r requirements.txt
+
+
+To undo the changes with virtualenv
+
+    .. code-block:: bash
+
+        $ deactivate
 
 ```
 WIP
@@ -39,6 +66,9 @@ export WATSON_PASS_STT="{your password}"
 
 export WATSON_USER_NLP="{your user}" #In most cases the same as WATSON_USER_STT
 export WATSON_PASS_NLP="{your password}"
+
+export GOOGLE_USER_STT="{your user}"
+export GOOGLE_PASS_STT="{your password}"
 ```
 
 ### Little demo
