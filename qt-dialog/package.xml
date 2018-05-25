@@ -58,6 +58,8 @@
   <build_depend>rostest</build_depend>
   <exec_depend>naoqi_bridge_msgs</exec_depend> 
   <build_depend>naoqi_bridge_msgs</build_depend>
+  <exec_depend>svox_tts</exec_depend>
+  <build_depend>svox_tts</build_depend>
   <exec_depend>audio_capture</exec_depend>
   <build_depend>audio_capture</build_depend>
 
