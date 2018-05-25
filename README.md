@@ -23,7 +23,7 @@ pocketsphinx
 1. Clone and cd in the qt-dialog repository
 
 ```bash
-        $ git clone git@github.com:AIRobolab-unilu/qt-dialog.git
+        $ git clone https://github.com/AIRobolab-unilu/qt-dialog.git
         $ cd qt-dialog
 ```
 
