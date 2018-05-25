@@ -6,3 +6,4 @@ rosinstall_generator
 wstool
 rosinstall
 opencv-python
+webrtcvad

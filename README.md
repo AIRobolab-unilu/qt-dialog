@@ -77,10 +77,11 @@ pocketsphinx
 			$ cd ..
 	```
 
-4. Install the python dependencies
+4. Install the python dependencies and add them to PYTHONPATH
 
 ```bash
-        $ sudo pip install -r requirements.txt
+        $ sudo env/bin/pip install -r requirements.txt
+        $ echo "export PYTHONPATH="${PYTHONPATH}:$(rospack find qt-dialog)/../env/lib/python2.7/site-packages"" >> ~/.bashrc
 ```
 
 5. Build the packages

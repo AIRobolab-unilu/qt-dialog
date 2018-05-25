@@ -56,7 +56,10 @@ class VAD():
         self.audio_buffer = []
         self.lock = Lock()
 
+        print 'TOOLS ##########################'
         self.tools = {'pyaudio':self.classic_record}
+        print self
+        print 'DONE #################'
         self.topic_recording = {'micro': False, 'topic': True}
 
         self.audio_messages = {'AudioBuffer': AudioBuffer, 'AudioData': AudioData}
@@ -100,6 +103,7 @@ class VAD():
 
     def record(self, *args, **kwargs):
         if self.get_audio is None:
+            print self
             self.get_audio = self.tools.get(rospy.get_param("vad"))
             if self.get_audio is None:
                 rospy.logerr(rospy.get_caller_id() + ' Wrong parameter "{}" for vad'.format(rospy.get_param("vad")))
