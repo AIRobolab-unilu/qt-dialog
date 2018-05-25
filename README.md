@@ -30,10 +30,18 @@ pocketsphinx
 
 2. It is recommended to use a virtual env
 
-```bash
-        $ virtualenv --system-site-packages env
-        $ source env/bin/activate
-```
+    1 If you do not have virtual env
+
+    ```bash
+            $ sudo pip install virtualenv 
+    ```
+
+    2 Create the virtual environment
+
+    ```bash
+            $ virtualenv --system-site-packages env
+            $ source env/bin/activate
+    ```
 3. Install the python dependencies
 
 ```bash
