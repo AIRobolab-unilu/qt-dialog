@@ -20,36 +20,31 @@ pocketsphinx
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+1. Clone and cd in the qt-dialog repository
 
-#. Clone and cd in the qt-dialog repository
-
-    .. code-block:: bash
-
+```bash
         $ git clone git@github.com:AIRobolab-unilu/qt-dialog.git
         $ cd qt-dialog
+```
 
-It is recommended to use a virtual env
 
-#. Create the virtual environment
+2. It is recommended to use a virtual env
 
-    .. code-block:: bash
-
+```bash
         $ virtualenv --system-site-packages env
         $ source env/bin/activate
+```
+3. Install the python dependencies
 
-#. Install the python dependencies
-
-    .. code-block:: bash
-
+```bash
         $ pip install -r requirements.txt
-
+```
 
 To undo the changes with virtualenv
 
-    .. code-block:: bash
-
+```bash
         $ deactivate
+```
 
 ```
 WIP
@@ -60,7 +55,7 @@ WIP
 Before using it you need to update your creditentials in your system environment.
 This can be done like that :
 
-```
+```bash
 export WATSON_USER_STT="{your user}"
 export WATSON_PASS_STT="{your password}"
 
