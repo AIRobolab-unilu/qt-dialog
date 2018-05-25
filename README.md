@@ -30,14 +30,33 @@ pocketsphinx
 
 2. It is recommended to use a virtual env
 
-```bash
-        $ virtualenv --system-site-packages env
-        $ source env/bin/activate
-```
+	1. If you do not have pip
+
+	```bash
+            $ sudo apt-get install python-pip
+    ```
+
+    2. If you do not have virtual env
+
+    ```bash
+            $ sudo pip install virtualenv 
+    ```
+
+    3. Install pyaudio
+    ```bash
+            $ sudo apt-get install python-pyaudio
+    ```
+
+    4. Create the virtual environment
+
+    ```bash
+            $ virtualenv --system-site-packages env
+            $ source env/bin/activate
+    ```
 3. Install the python dependencies
 
 ```bash
-        $ pip install -r requirements.txt
+        $ sudo pip install -r requirements.txt
 ```
 
 To undo the changes with virtualenv
