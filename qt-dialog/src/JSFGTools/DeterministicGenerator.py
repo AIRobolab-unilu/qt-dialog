@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python
 # @copyright: MIT License
 #   Copyright (c) 2018 syntactic (Pastèque Ho)
 #   Permission is hereby granted, free of charge, to any person obtaining a copy

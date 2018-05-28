@@ -4,7 +4,9 @@ from synthesizer import Synthesizer
 from os import environ
 import rospy
 
-import google
+import io
+
+from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 #from threading import thread
@@ -39,12 +41,13 @@ class GoogleSynthesizer(Synthesizer):
             sample_rate_hertz=16000,
             language_code='en-US')
 
-
-        response = client.recognize(config, audio)
+        print 'sending data ...'
+        response = self.client.recognize(config, audio)
+        print 'received data ...'
 
         for result in response.results:
             print 'Transcript: {}'.format(result.alternatives[0].transcript)
             return result.alternatives[0].transcript
 
 if __name__ == '__main__':
-    pass
+    GoogleSynthesizer('test')

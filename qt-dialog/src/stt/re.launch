@@ -1,0 +1,5 @@
+<launch>
+
+	<node name="stt" pkg="qt-dialog" type="stt_node.py" output="screen" cwd="node"/>
+
+</launch>
