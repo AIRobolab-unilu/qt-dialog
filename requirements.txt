@@ -7,3 +7,4 @@ wstool
 rosinstall
 opencv-python
 webrtcvad
+pyaudio
