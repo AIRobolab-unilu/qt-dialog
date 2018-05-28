@@ -13,11 +13,18 @@ import constants as cst
 
 class STT():
 
-    def __init__(self, tool):
-        self.tool = tool
+    def __init__(self):
+        
 
         rospy.init_node('stt', anonymous=True)
         self.pub = rospy.Publisher('transcription', String, queue_size=10)
+        self.matches = {'google': GoogleSynthesizer, 'watson': WatsonSynthesizer}
+
+        self.tool = self.matches.get(rospy.get_param('asr'))(cst.OUTPUT_FILE)
+
+        if self.tool is None:
+            rospy.logerr(rospy.get_caller_id() + ' Wrong parameter "{}" for asr'.format(rospy.get_param("asr")))
+
         self.listener()
 
     def callback(self, data):
@@ -41,5 +48,4 @@ class STT():
         rospy.spin()
 
 if __name__ == '__main__':
-    STT(GoogleSynthesizer(cst.OUTPUT_FILE))
-    #STT(WatsonSynthesizer(cst.OUTPUT_FILE))
+    pass

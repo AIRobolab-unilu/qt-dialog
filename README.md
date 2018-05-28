@@ -25,8 +25,8 @@ pocketsphinx
 ```bash
 		$ roscd 
 		$ cd ../src
-        $ git clone https://github.com/AIRobolab-unilu/qt-dialog.git
-        $ cd qt-dialog
+    	$ git clone https://github.com/AIRobolab-unilu/qt-dialog.git
+    	$ cd qt-dialog
 ```
 
 
@@ -73,8 +73,8 @@ pocketsphinx
 	        $ pip install .
 	        $ cd ..
 	        $ rm -rf requests
-			$ roscd qt-dialog
-			$ cd ..
+	        $ roscd qt-dialog
+	        $ cd ..
 	```
 
 4. Install the python dependencies and add them to PYTHONPATH
