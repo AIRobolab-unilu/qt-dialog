@@ -5,6 +5,7 @@ import os
 
 from stt.watson_synthesizer import WatsonSynthesizer
 from stt.amazon_synthesizer import AmazonSynthesizer
+from stt.google_synthetizer import GoogleSynthesizer
 from stt.pocket_sphinx_synthesizer import PocketSphinxSynthesizer
 
 
@@ -40,4 +41,5 @@ class STT():
         rospy.spin()
 
 if __name__ == '__main__':
-    STT(WatsonSynthesizer(cst.OUTPUT_FILE))
+    STT(GoogleSynthesizer(cst.OUTPUT_FILE))
+    #STT(WatsonSynthesizer(cst.OUTPUT_FILE))

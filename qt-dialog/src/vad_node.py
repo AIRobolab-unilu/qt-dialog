@@ -25,15 +25,7 @@ try:
 except ImportError:
     print 'Could not import {}'.format('pyaudio')
 
-try:
-    from naoqi_bridge_msgs.msg import AudioBuffer                   
-except ImportError:
-    print 'Could not import {} from {}'.format('AudioBuffer', 'naoqi_bridge_msgs.msg')
 
-try:
-    from audio_common_msgs.msg import AudioData                    
-except ImportError:
-    print 'Could not import {} from {}'.format('AudioData', 'audio_common_msgs.msg')
 
 
 
@@ -62,7 +54,18 @@ class VAD():
         print 'DONE #################'
         self.topic_recording = {'micro': False, 'topic': True}
 
-        self.audio_messages = {'AudioBuffer': AudioBuffer, 'AudioData': AudioData}
+        self.audio_messages = {}
+        try:
+            from naoqi_bridge_msgs.msg import AudioBuffer
+            self.audio_messages['AudioBuffer'] = AudioBuffer              
+        except ImportError:
+            print 'Could not import {} from {}'.format('AudioBuffer', 'naoqi_bridge_msgs.msg')
+
+        try:
+            from audio_common_msgs.msg import AudioData
+            self.audio_messages['AudioData'] = AudioData                   
+        except ImportError:
+            print 'Could not import {} from {}'.format('AudioData', 'audio_common_msgs.msg')
         
         self.p = pyaudio.PyAudio()
         self.stream = None

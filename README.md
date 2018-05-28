@@ -84,6 +84,14 @@ pocketsphinx
         $ echo "export PYTHONPATH="${PYTHONPATH}:$(rospack find qt-dialog)/../env/lib/python2.7/site-packages"" >> ~/.bashrc
 ```
 
+5. If you want to use Pepper and you don't have the packages
+
+```bash
+        $ cd third_party
+        $ git clone https://github.com/ros-naoqi/naoqi_bridge
+```
+
+
 5. Build the packages
 
 ```bash
@@ -114,8 +122,7 @@ export WATSON_PASS_STT="{your password}"
 export WATSON_USER_NLP="{your user}" #In most cases the same as WATSON_USER_STT
 export WATSON_PASS_NLP="{your password}"
 
-export GOOGLE_USER_STT="{your user}"
-export GOOGLE_PASS_STT="{your password}"
+export GOOGLE_APPLICATION_CREDENTIALS="/path/to/[FILE_NAME].json"
 ```
 
 ### Little demo
