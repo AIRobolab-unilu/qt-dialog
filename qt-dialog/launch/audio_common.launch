@@ -1,9 +1,14 @@
 <launch>
+	
+
+	<include file="$(find audio_capture)/launch/capture.launch"/>
+	<param name="input" value="topic" />
+	<param name="input_topic" value="audio/audio" />
 
 	<param name="vad" value="pyaudio" />
 	<param name="input" value="micro" />
 	<param name="output_speaker" value="pico" />
-	<param name="asr" value="watson" />
+	<param name="asr" value="google" />
 	<include file="$(find svox_tts)/launch/svox_tts.launch"/>
 
 	

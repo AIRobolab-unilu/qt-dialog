@@ -41,8 +41,8 @@ class VAD():
         rospy.init_node('vad', anonymous=True)
 
         #Create a thred because we need to listen to the "speaking" topic
-        self.tool = VADWebRTCV2(self) #Set itself as the observer
-        self.tool.start() #Start the thread
+        
+        
 
         self.speaking = False
         self.audio_buffer = []
@@ -55,19 +55,23 @@ class VAD():
         self.topic_recording = {'micro': False, 'topic': True}
 
         self.audio_messages = {}
+        self.byte_format = 'h'
         try:
             from naoqi_bridge_msgs.msg import AudioBuffer
-            self.audio_messages['AudioBuffer'] = AudioBuffer              
+            self.audio_messages['AudioBuffer'] = AudioBuffer       
         except ImportError:
             print 'Could not import {} from {}'.format('AudioBuffer', 'naoqi_bridge_msgs.msg')
 
         try:
             from audio_common_msgs.msg import AudioData
-            self.audio_messages['AudioData'] = AudioData                   
+            self.audio_messages['AudioData'] = AudioData
+            if self.topic_recording[rospy.get_param("input")]:
+                if rospy.get_param('input_topic_msg') == 'AudioData':
+                    self.byte_format = 'B'              
         except ImportError:
             print 'Could not import {} from {}'.format('AudioData', 'audio_common_msgs.msg')
         
-        self.p = pyaudio.PyAudio()
+        #self.p = pyaudio.PyAudio()
         self.stream = None
         self.chunk_size = int(16000 * 30 / 1000)*2
         self.b = '' 
@@ -85,6 +89,9 @@ class VAD():
 
         self.channel = 'CHANNEL_REAR_LEFT'
 
+        self.tool = VADWebRTCV2(self, self.byte_format) #Set itself as the observer
+        self.tool.start() #Start the thread
+
         self.listener()       
 
     def listener(self):
@@ -93,9 +100,9 @@ class VAD():
         if self.topic_recording[rospy.get_param("input")]:
             rospy.loginfo(rospy.get_caller_id() + ' Subscribing to "{}" with the message {}'.format(rospy.get_param("input_topic"), rospy.get_param('input_topic_msg')))
 
-            if rospy.get_param('input_topic_msg') == 'AudioBuffer':
+            if rospy.get_param('input_topic_msg') == 'AudioBuffer' and self.audio_messages.get('AudioBuffer') is not None: #int16
                 rospy.Subscriber(rospy.get_param("input_topic"), AudioBuffer, self.callback_audio_buffer)
-            elif rospy.get_param('input_topic_msg') == 'AudioData':
+            elif rospy.get_param('input_topic_msg') == 'AudioData'  and self.audio_messages.get('AudioData') is not None: #uint8
                 rospy.Subscriber(rospy.get_param("input_topic"), AudioData, self.callback_audio_data)
             else:
                 rospy.logerr(rospy.get_caller_id() + ' Wrong parameter "{}" for input_topic_msg'.format(rospy.get_param("input_topic_msg")))
@@ -120,6 +127,32 @@ class VAD():
 
     def select_channel(self, channels):
         return channels[0]
+
+    def callback_audio_data(self, data):
+
+        if self.speaking:
+            self.b = ''
+        
+
+        self.audio_buffer += data.data
+        self.rate = '16000'
+
+
+        num_channel = len(data.channelMap)
+
+        channels = [[] for i in xrange(num_channel)]
+        [channels[i%num_channel].append(data.data[i]) for i in xrange(len(data.data))] #To test a particular channel
+
+
+        tmp = self.select_channel(channels)
+
+        buff = struct.pack('<' + (self.byte_format * len(tmp)), *tmp) #For uint8
+        if self.b == []:
+            self.b = buff
+        else:
+            self.b += buff
+
+
 
     def callback_audio_buffer(self, data):
 
@@ -205,7 +238,7 @@ class VAD():
 
         tmp = self.select_channel(channels)
 
-        buff = struct.pack('<' + ('h' * len(tmp)), *tmp)
+        buff = struct.pack('<' + (self.byte_format * len(tmp)), *tmp) #For int16
         if self.b == []:
             self.b = buff
         else:
@@ -219,14 +252,14 @@ class VAD():
         #print len(self.b)
         #self.stream.write(buff)
 
-        if len(self.b) > 200000:
+        #if len(self.b) > 200000:
 
-            with contextlib.closing(wave.open('test.wav', 'wb')) as wf:
+            #with contextlib.closing(wave.open('test.wav', 'wb')) as wf:
                 #print 'saving ...'
-                wf.setnchannels(1)
-                wf.setsampwidth(2)
-                wf.setframerate(16000)
-                wf.writeframes(self.b)
+                #wf.setnchannels(1)
+                #wf.setsampwidth(2)
+                #wf.setframerate(16000)
+                #wf.writeframes(self.b)
         #exit(0)
 
         #print type(data)
@@ -279,16 +312,6 @@ class VAD():
         #print type(self.b)
         #self.stream.write(tmp)
         return tmp
-
-        
-
-        #print len(data)
-
-        dt = np.dtype(np.int16)
-        #print np.frombuffer(data, dtype=dt)
-
-        
-        return data #For PyAudio
 
     def buffer_record(self):
         rospy.sleep(5)

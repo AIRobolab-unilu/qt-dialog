@@ -28,11 +28,13 @@ from vad_listener import VADListener
 
 class VADWebRTCV2(WebRTC) :
 
-    def __init__(self, observer, chunk_duration_ms = 30, padding_duration_ms = 1500, 
+    def __init__(self, observer, byte_format, chunk_duration_ms = 30, padding_duration_ms = 1500, 
         format = pyaudio.paInt16, channels = 1, rate = 16000) :
 
+        self.formats = {'B': pyaudio.paUInt8, 'h': pyaudio.paInt16}
 
-        self.format = pyaudio.paInt16
+        self.byte_format = byte_format
+        self.format = self.formats[self.byte_format]
         self.channels = channels
         self.rate = rate
         self.chunk = int(self.rate * chunk_duration_ms / 1000)
