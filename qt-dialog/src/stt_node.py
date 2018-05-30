@@ -15,7 +15,6 @@ class STT():
 
     def __init__(self):
         
-
         rospy.init_node('stt', anonymous=True)
         self.pub = rospy.Publisher('transcription', String, queue_size=10)
         self.matches = {'google': GoogleSynthesizer, 'watson': WatsonSynthesizer}
@@ -48,4 +47,4 @@ class STT():
         rospy.spin()
 
 if __name__ == '__main__':
-    pass
+    STT()

@@ -1,14 +1,33 @@
 <launch>
 	
 
-	<include file="$(find audio_capture)/launch/capture.launch"/>
-	<param name="input" value="topic" />
-	<param name="input_topic" value="audio/audio" />
+	<!-- arecord -l will show available input devices, use the car number as
+      the first number and the subdevice number as the second in a string
+      like hw:1,0 -->
+  <arg name="device" default=""/>
+  <arg name="channels" default="1"/>
+  <arg name="sample_rate" default="16000"/>
+  <arg name="format" default="wave"/>
+  <arg name="ns" default="audio"/>
 
-	<param name="vad" value="pyaudio" />
-	<param name="input" value="micro" />
+ 	<group ns="$(arg ns)">
+    	<node name="audio_capture" pkg="audio_capture" type="audio_capture" output="screen">
+      		<param name="bitrate" value="128"/>
+      		<param name="device" value="$(arg device)"/>
+	      	<param name="channels" value="$(arg channels)"/>
+	      	<param name="sample_rate" value="$(arg sample_rate)"/>
+	     	<param name="format" value="$(arg format)"/>
+	    </node>
+	</group>
+
+
+	<param name="input" value="topic" />
+	<param name="input_topic" value="audio/audio" /> 
+	<param name="input_topic_msg" value="AudioData" /> 
+
+	<param name="vad" value="webrtc" />
 	<param name="output_speaker" value="pico" />
-	<param name="asr" value="google" />
+	<param name="asr" value="watson" />
 	<include file="$(find svox_tts)/launch/svox_tts.launch"/>
 
 	

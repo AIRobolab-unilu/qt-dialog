@@ -1,6 +1,6 @@
 <launch>
 
-	<param name="vad" value="pyaudio" />
+	<param name="vad" value="webrtc" />
 	<param name="output_speaker" value="pepper" />
 
 	<param name="input" value="topic" />

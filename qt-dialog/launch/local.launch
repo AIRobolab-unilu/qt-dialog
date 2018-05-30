@@ -1,6 +1,6 @@
 <launch>
 
-	<param name="vad" value="pyaudio" />
+	<param name="vad" value="webrtc" />
 	<param name="input" value="micro" />
 	<param name="output_speaker" value="pico" />
 	<param name="asr" value="watson" />

@@ -48,22 +48,22 @@ class VAD():
         self.audio_buffer = []
         self.lock = Lock()
 
-        print 'TOOLS ##########################'
-        self.tools = {'pyaudio':self.classic_record}
-        print self
-        print 'DONE #################'
+        self.tools = {'webrtc':self.classic_record}
+
         self.topic_recording = {'micro': False, 'topic': True}
 
         self.audio_messages = {}
         self.byte_format = 'h'
         try:
             from naoqi_bridge_msgs.msg import AudioBuffer
+            self.AudioBuffer = AudioBuffer
             self.audio_messages['AudioBuffer'] = AudioBuffer       
         except ImportError:
             print 'Could not import {} from {}'.format('AudioBuffer', 'naoqi_bridge_msgs.msg')
 
         try:
             from audio_common_msgs.msg import AudioData
+            self.AudioData = AudioData
             self.audio_messages['AudioData'] = AudioData
             if self.topic_recording[rospy.get_param("input")]:
                 if rospy.get_param('input_topic_msg') == 'AudioData':
@@ -97,13 +97,15 @@ class VAD():
     def listener(self):
         rospy.Subscriber("speaking", Bool, self.callback)
 
+        #print self.audio_messages
+
         if self.topic_recording[rospy.get_param("input")]:
             rospy.loginfo(rospy.get_caller_id() + ' Subscribing to "{}" with the message {}'.format(rospy.get_param("input_topic"), rospy.get_param('input_topic_msg')))
 
             if rospy.get_param('input_topic_msg') == 'AudioBuffer' and self.audio_messages.get('AudioBuffer') is not None: #int16
-                rospy.Subscriber(rospy.get_param("input_topic"), AudioBuffer, self.callback_audio_buffer)
+                rospy.Subscriber(rospy.get_param("input_topic"), self.AudioBuffer, self.callback_audio)
             elif rospy.get_param('input_topic_msg') == 'AudioData'  and self.audio_messages.get('AudioData') is not None: #uint8
-                rospy.Subscriber(rospy.get_param("input_topic"), AudioData, self.callback_audio_data)
+                rospy.Subscriber(rospy.get_param("input_topic"), self.AudioData, self.callback_audio)
             else:
                 rospy.logerr(rospy.get_caller_id() + ' Wrong parameter "{}" for input_topic_msg'.format(rospy.get_param("input_topic_msg")))
             
@@ -113,7 +115,7 @@ class VAD():
 
     def record(self, *args, **kwargs):
         if self.get_audio is None:
-            print self
+            #print self
             self.get_audio = self.tools.get(rospy.get_param("vad"))
             if self.get_audio is None:
                 rospy.logerr(rospy.get_caller_id() + ' Wrong parameter "{}" for vad'.format(rospy.get_param("vad")))
@@ -128,11 +130,15 @@ class VAD():
     def select_channel(self, channels):
         return channels[0]
 
+
+
+
     def callback_audio_data(self, data):
 
         if self.speaking:
             self.b = ''
-        
+
+        #print self.byte_format
 
         self.audio_buffer += data.data
         self.rate = '16000'
@@ -154,15 +160,23 @@ class VAD():
 
 
 
-    def callback_audio_buffer(self, data):
+    def callback_audio(self, msg):
 
         if self.speaking:
             self.b = ''
         
+        msg_type = str(msg._type).split('/')[-1]
 
-        self.audio_buffer += data.data
-        self.rate = data.frequency
+        self.audio_buffer += msg.data
+        
 
+        if msg_type == 'AudioBuffer':
+            self.rate = msg.frequency
+        elif msg_type == 'AudioData':
+            self.rate = 16000
+        else:
+            #This should be impossible
+            rospy.logerr(rospy.get_caller_id() + ' Wrong parameter "{}" for input_topic_msg'.format(msg_type))
         #channel_map = [elem.encode("hex") for elem in data.channelMap]
         #print channel_map
 
@@ -179,10 +193,7 @@ class VAD():
         #print size
         #tmp = [data.data[i] for i in xrange(size) if random() > (data.frequency-32000+0.0)/data.frequency]
 
-        num_channel = len(data.channelMap)
 
-        channels = [[] for i in xrange(num_channel)]
-        [channels[i%num_channel].append(data.data[i]) for i in xrange(len(data.data))] #To test a particular channel
 
         #tmp = [0 for i in xrange(len(data.data)/num_channel)]
         #tmp = [tmp[i] + data.data[i+j]/num_channel for j in xrange(num_channel) for i in xrange(len(data.data)/num_channel)] 
@@ -235,10 +246,28 @@ class VAD():
         #tmp = data.data
 
         #buff = struct.pack('f'*len(tmp), *tmp)
+        #print msg_type
+        if msg_type == 'AudioBuffer':
+            #Convert 4 channels to mono
+            num_channel = len(msg.channelMap)
 
-        tmp = self.select_channel(channels)
+            channels = [[] for i in xrange(num_channel)]
+            [channels[i%num_channel].append(msg.data[i]) for i in xrange(len(msg.data))] #To test a particular channel
+            tmp = self.select_channel(channels)
 
-        buff = struct.pack('<' + (self.byte_format * len(tmp)), *tmp) #For int16
+            #print self.byte_format
+            buff = struct.pack('<' + (self.byte_format * len(tmp)), *tmp)
+        elif msg_type == 'AudioData':
+
+            #already mono
+            buff = msg.data
+            #print tmp
+        else:
+            #This should be impossible
+            rospy.logerr(rospy.get_caller_id() + ' Wrong parameter "{}" for input_topic_msg'.format(msg_type))
+            
+        
+
         if self.b == []:
             self.b = buff
         else:
@@ -282,8 +311,10 @@ class VAD():
         args = args[0]
 
         if not self.topic_recording[rospy.get_param("input")]:
+            #print 'pyaudio'
             return args[0].read(args[1])
 
+        #print 'topic'
         return self.get_topic_buffer()
 
         #self.buffer_record()
