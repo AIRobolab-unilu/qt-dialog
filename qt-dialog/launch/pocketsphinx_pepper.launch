@@ -14,7 +14,8 @@
 	<param name="input_topic" value="naoqi_microphone/audio_raw" />
 	<param name="input_topic_msg" value="AudioBuffer" />
 	<include file="$(find naoqi_sensors_py)/launch/microphone.launch"/>
-
+	
+	<node name="motivational" pkg="motivational_component" type="motivational_node.py" output="screen" cwd="node"/>
 	<node name="emotions" pkg="qt_face" type="face_duration.py" output="screen" cwd="node"/>
 	<node name="tts" pkg="qt-dialog" type="tts_node.py" output="screen" cwd="node"/>
 	<node name="nlp" pkg="qt-dialog" type="nlp_node.py" output="screen" cwd="node"/>

@@ -2,8 +2,9 @@
 import contextlib
 import constants as cst
 
-from random import randint, choice
+from random import randint, choice, shuffle
 from std_msgs.msg import String
+from motivational_component.srv import * 
 
 import io
 import threading
@@ -26,6 +27,7 @@ END = ('end', 'over', 'other', 'and', 'stop', 'quit', 'exit') #the STT can get '
 
 TOPIC = ('conversation', 'discussion', 'topic', 'talk')
 
+AFFIRMATION = ('yes', 'yeah', 'yep', 'ok', 'okay')
 NEGATION = ('not', "don't", 'no', "did'nt", "'nt")
 
 PERSONNAL = ('i', 'me', 'am', "i'm")
@@ -37,6 +39,8 @@ EMOTIONS_BAD = ('bad', 'pain', 'hurt', 'sad', 'worse')
 EMOTIONS_ANGRY = ('angry', 'coleric')
 
 pub = rospy.Publisher('qt_face/setEmotion', String, queue_size=10)
+
+
 
 def is_negative(sentence):
     negative = False
@@ -109,7 +113,7 @@ def text2int(textnum, numwords={}):
 
 
 def file_len(fname):
-    with contextlib.closing(open(cst.JOKES_PATH, 'r')) as f:
+    with contextlib.closing(open(fname, 'r')) as f:
         for i, l in enumerate(f):
             pass
     return i + 1
@@ -131,7 +135,7 @@ class Client():
         if self.handlers is None:
             return
 
-        print self.handlers
+        #print self.handlers
         for handler in self.handlers:
             self.subscriber.add_handler(handler)
         #self.subscribe(keywords=self.keywords_passive)
@@ -151,7 +155,7 @@ class Standard(Client):
         with contextlib.closing(io.open(cst.JOKES_PATH, mode="r", encoding='utf-8')) as f: #use io for encoding in python 2
             for i, line in enumerate(f):
                 if i == n:
-                     return line
+                    return line
 
     def repeat(self):
          return cst.REPEAT.format(self.subscriber.last_answer)
@@ -171,8 +175,110 @@ class Standard(Client):
         return cst.RESET
 
     def smile(self):
-        pub.publish('happy')
+        self.subscriber.publish_action('1')
         return 'hehehehehehe'
+
+class Quizz(Client):
+    def __init__(self, subscriber):
+        Client.__init__(self, subscriber)
+        self.playing = False
+
+        with contextlib.closing(io.open(cst.QUIZZ_PATH, mode="r", encoding='utf-8')) as f: #use io for encoding in python 2
+            self.questions = f.read().splitlines()
+
+        self.subscriber.subscribe_to_topic(KeywordsHandler(self.play_game, (AFFIRMATION,), extendable=True))
+        self.subscriber.subscribe_to_topic(KeywordsHandler(self.do_not_play_game, (NEGATION,), extendable=True))
+
+        shuffle(self.questions)
+
+
+    def cancel(self):
+        if self.thread is not None:
+            self.playing = True
+
+
+    def get_handlers(self):
+
+        self.thread = threading.Thread(target=self.play_quizz)
+        self.thread.start()
+
+        return None
+
+    def play_quizz(self,):
+        
+        response = rospy.ServiceProxy('variable_info', VariableInfo)('curiosity')
+
+        while float(response.value) > response.min:
+
+            rospy.ServiceProxy('increment_variable', Increment)('curiosity', -10)
+            rospy.ServiceProxy('increment_variable', Increment)('frustration', 5)
+            response = rospy.ServiceProxy('variable_info', VariableInfo)('curiosity')
+
+            time = cst.BASE_TIME_PLAY_GAME+((1-(float(response.value)/response.max))*cst.TIME_ADDITION_PLAY_GAME)
+            print 'SLEEPING {}s'.format(time)
+            print 'curiosity {}'.format(response.value)
+            
+            #print '{}+{}'.format(cst.BASE_TIME_PLAY_GAME, ((1-(float(response.value)/response.max))*cst.TIME_ADDITION_PLAY_GAME))
+
+            self.subscriber.publish_data(choice(cst.ASK_PLAY_GAME))
+
+            #self.subscriber.subscribe_to_topic(KeywordsHandler(self.true_callback, ((AFFIRMATION),), extendable=False))
+            for i in xrange(int(time)):
+                if self.playing:
+                    return
+                rospy.sleep(1)
+
+
+        self.subscriber.publish_data(choice(cst.NO_PLAY_GAME))
+
+    def do_not_play_game(self, data):
+        rospy.ServiceProxy('increment_variable', Increment)('frustration', 15)
+
+    def play_game(self, data):
+
+        rospy.ServiceProxy('increment_variable', Increment)('curiosity', -2)
+        self.playing = True
+
+        self.subscriber.publish_data(choice(cst.HAPPY_PLAY_GAME))
+
+        if not self.questions:
+            self.subscriber.publish_data(cst.NO_QUESTIONS_PLAY_GAME)
+            return
+
+        question = self.questions[0].split('$')[0]
+        self.correct_answer = self.questions[0].split('$')[1]
+
+        del self.questions[0]
+
+        self.subscriber.publish_data(question)
+
+        tmp = []
+        for word in self.correct_answer.split():
+            tmp.append((word,))
+
+        #self.subscriber.subscribe_to_topic(KeywordsHandler(self.true_callback, ((self.correct_answer,),), extendable=False))
+        
+        self.subscriber.subscribe_to_topic(KeywordsHandler(self.true_callback, tuple(tmp), extendable=False))
+        self.subscriber.subscribe_to_topic(KeywordsHandler(self.wrong_callback, (('*',),), extendable=False))
+         
+
+    def true_callback(self, data):
+        self.subscriber.publish_data(choice(cst.WIN_PLAY_GAME))
+        self.ask_continue()
+
+    def wrong_callback(self, data):
+        self.subscriber.publish_data(choice(cst.LOSE_PLAY_GAME).format(self.correct_answer))
+        self.ask_continue()
+
+    def ask_continue(self):
+
+        self.subscriber.publish_data(choice(cst.ASK_CONTINUE_PLAY_GAME))
+
+        self.subscriber.subscribe_to_topic(KeywordsHandler(self.play_game, (AFFIRMATION,), extendable=True))
+        self.subscriber.subscribe_to_topic(KeywordsHandler(self.stop_play_game, (NEGATION,), extendable=True))
+
+    def stop_play_game(self, data):
+        self.subscriber.publish_data(choice(cst.STOP_PLAY_GAME))
 
 class ListMaker(Client):
 

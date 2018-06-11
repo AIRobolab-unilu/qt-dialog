@@ -46,14 +46,9 @@ class TTS():
         self.engine.say(text)
         self.engine.runAndWait()
 
-    
-
     def speak(self, data):
 
         data = data.split('|')
-        
-
-
 
         print data
 

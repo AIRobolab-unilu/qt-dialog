@@ -18,9 +18,58 @@ INTENTS_JSON = path.abspath(path.join(DATA_DIR, "intents.json"))
 ACTIONS_JSON = path.abspath(path.join(DATA_DIR, "actions.json"))
 SENTENCES_JSON = path.abspath(path.join(DATA_DIR, "sentences.json"))
 
+CONFIG_MOTIVATIONAL_JSON = path.abspath(path.join(DATA_DIR, "config.json"))
+ASSISTIVE_MODE_JSON = path.abspath(path.join(DATA_DIR, "assistive_mode.json"))
+COMPANION_MODE_JSON = path.abspath(path.join(DATA_DIR, "companion_mode.json"))
+SERVICE_MODE_JSON = path.abspath(path.join(DATA_DIR, "service_mode.json"))
+
 GRAMMAR_FILE = path.abspath(path.join(GRAMMAR_DIR, "tmp.gram"))
 
 JOKES_PATH = path.abspath(path.join(DATA_DIR, "jokes.txt"))
+QUIZZ_PATH = path.abspath(path.join(DATA_DIR, "quizz.txt"))
+
+##########################################################
+#Passive Behavior
+
+BASE_TIME_PLAY_GAME = 10
+TIME_ADDITION_PLAY_GAME = 20
+
+ASK_PLAY_GAME = [
+'Do you want to play with me',
+"let's play together"
+]
+
+HAPPY_PLAY_GAME = [
+"cool | let's begin",
+"nice | let's start"
+]
+
+WIN_PLAY_GAME = [
+'it is the good answer',
+'wll played'
+]
+
+LOSE_PLAY_GAME = [
+'it is false | the answer was {}',
+'noooooooo | the answer was {}'
+]
+
+NO_PLAY_GAME = [
+'what a shame to be left alone like that',
+'if no one wants to play with me i will do nothing'
+]
+
+NO_QUESTIONS_PLAY_GAME = 'we did all the questions it was nice to play with you'
+
+ASK_CONTINUE_PLAY_GAME = [
+'do you want to continue playing',
+'should we play again'
+]
+
+STOP_PLAY_GAME = [
+'ok | it was fun playing with you',
+"ok | let'play later"
+]
 
 ##########################################################
 #Answers

@@ -22,6 +22,8 @@ import JSFGTools.JSGFParser as parser
 import JSFGTools.JSGFGrammar as gram
 from JSFGTools.DeterministicGenerator import processRHS
 
+from motivational_component.msg import * 
+
 class Dialog():
 
     def __init__(self):
@@ -68,7 +70,6 @@ class Dialog():
         #self.process('heard well this is a stubborn enough time off at the')
 
 
-
         self.listener()
 
 
@@ -88,6 +89,8 @@ class Dialog():
         self.counter = 0
         self.max_retry = 2
 
+
+
     def create_grammar_file_old(self, sentence):
 
 
@@ -105,11 +108,8 @@ class Dialog():
 
     def create_grammar(self, sentence):
 
-        rule = 'public <auto_generate> = {};'.format(sentence)
+        return 'public <auto_generate> = {};'.format(sentence)
 
-
-        #print rule
-        return rule
     def init_grammar(self):
 
         self.grammar = {}
@@ -126,7 +126,7 @@ class Dialog():
 
                     self.grammar[expansion.lower()] = name
 
-        print self.grammar
+        #print self.grammar
         rospy.loginfo(rospy.get_caller_id() + ' loaded {} sentences'.format(len(self.grammar)))
         #for sentence, name in self.sentences["sentence"].iteritems():
             #rule = PublicRule(str(name), Literal(sentence))
@@ -157,6 +157,7 @@ class Dialog():
     def listener(self):
         rospy.Subscriber("reset", Bool, self.reset_callback)
         rospy.Subscriber("transcription", String, self.callback)
+        rospy.Subscriber("message_variable", MessageVariable, self.message_variable_callback)
         rospy.spin()
 
     def reset_callback(self, data):
@@ -190,7 +191,7 @@ class Dialog():
         #relevance = {client:0 for handler in handlers}
         relevance = {}
 
-        print handlers
+        #print handlers
 
         for handler in handlers:
 
@@ -199,7 +200,7 @@ class Dialog():
             if handler is None:
                 continue
 
-            total_counter = 0
+            total_counter = 0.0
             required_counter = 0
             for required in handler.keywords:
 
@@ -208,16 +209,19 @@ class Dialog():
                 
                 found = False
                 for optional in required:
+                    if optional == '*':
+                        total_counter += 0.99
+                        found = True
 
                     #print 'is "'+optional+'"" in "'+ data + '"" ?'
 
                     if handler.extendable:
-                        if optional in data or optional == '*':
+                        if optional in data:
                             #print 'opt : '+optional
                             found = True
                             total_counter += 1
                     else:
-                        if optional in data.split() or optional == '*':
+                        if optional in data.split():
                             #print 'opt : '+optional
                             found = True
                             total_counter += 1
@@ -230,7 +234,7 @@ class Dialog():
 
             score_opt = total_counter/len(handler.keywords)
             score_rqr = required_counter/len(handler.keywords)
-            if score_rqr >= 1:
+            if score_rqr >= 0.99:
                 #print counter
                 
                 relevance[handler] = score_opt
@@ -275,6 +279,8 @@ class Dialog():
         sentence = self.grammar.get(data)
 
         #If there is not match, remove courtesy and try again
+        data = self.remove_part(data, 'hey', 0) 
+        data = self.remove_part(data, 'hey', -1) 
         data = self.remove_part(data, 'cutie', 0) #Mistood for 'QT'
         data = self.remove_part(data, 'kitty', 0) #Mistood for 'QT'
         data = self.remove_part(data, 'cutie', -1) #Mistood for 'QT'
@@ -307,6 +313,7 @@ class Dialog():
                 if handler is not None:
                     #Reset the hot topic
                     self.hot_topic = []
+                    self.counter += 1
                     self.publish_data(handler.callback(data))
                     return
 
@@ -320,6 +327,7 @@ class Dialog():
                 handler = self.get_best_handler(self.handlers, data)
                 if handler is not None:
                         #self.publish_data(getattr(handler.client, handler.callback)())
+                    self.counter += 1
                     self.publish_data(handler.callback(data))
                     #print '###############################################'
                     return
@@ -384,18 +392,14 @@ class Dialog():
                 rospy.logfatal(rospy.get_caller_id() + ' The class "{}" does not exists in the module "features" !'.format(tmp[0], tmp[1]))
                 return
 
-        
+        self.counter += 1
         self.publish_data(text)
 
     def subscribe_to_topic(self, handler):
 
-        self.hot_topic.append(handler)
-
-    
+        self.hot_topic.append(handler) 
 
     def publish_data(self, data):
-
-        self.counter += 1
 
         if data == cst.RESET:
             self.reset()
@@ -436,6 +440,9 @@ class Dialog():
         else:
             self.clients[client] = keywords
         """
+
+    def message_variable_callback(self, data):
+        self.publish_data('oops there is a {} | the {} of my {} has been reached'.format(data.type, data.position, data.name))
 
 if __name__ == '__main__':
     Dialog()

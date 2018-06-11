@@ -11,9 +11,10 @@
 		<arg name="grammar" value="asr"/>
 	</include>
 
-  <node name="emotions" pkg="qt_face" type="face_duration.py" output="screen" cwd="node"/>
-  <node name="tts" pkg="qt-dialog" type="tts_node.py" output="screen" cwd="node"/>
-  <node name="nlp" pkg="qt-dialog" type="nlp_node.py" output="screen" cwd="node"/>
-  <node name="dialog" pkg="qt-dialog" type="dialog_node.py" output="screen" cwd="node"/>
+	<node name="motivational" pkg="motivational_component" type="motivational_node.py" output="screen" cwd="node"/>
+	<node name="emotions" pkg="qt_face" type="face_duration.py" output="screen" cwd="node"/>
+	<node name="tts" pkg="qt-dialog" type="tts_node.py" output="screen" cwd="node"/>
+	<node name="nlp" pkg="qt-dialog" type="nlp_node.py" output="screen" cwd="node"/>
+	<node name="dialog" pkg="qt-dialog" type="dialog_node.py" output="screen" cwd="node"/>
 
 </launch>

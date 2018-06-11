@@ -8,3 +8,5 @@ rosinstall
 opencv-python
 webrtcvad
 pyaudio
+rasa_core
+rasa_nlu[spacy]

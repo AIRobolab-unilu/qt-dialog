@@ -38,7 +38,7 @@ class WatsonNLP(ComprehensionModule):
         process = subprocess.Popen(['bash', cst.WATSON_NLP_SCRIPT, self.user, self.passwd, cst.WATSON_NLP_PARAM+'.tmp', text], stdout=subprocess.PIPE)
         out, err = process.communicate()
 
-        print 'Watson =>', out, err
+        #print 'Watson =>', out, err
 
 
         """response = self.natural_language_understanding.analyze(

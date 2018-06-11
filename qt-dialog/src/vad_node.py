@@ -41,7 +41,7 @@ class VAD():
         rospy.init_node('vad', anonymous=True)
 
         #Create a thred because we need to listen to the "speaking" topic
-        
+        self.counter = 0
         
 
         self.speaking = False
@@ -303,8 +303,18 @@ class VAD():
 
     def callback(self, data):
         rospy.loginfo(rospy.get_caller_id() + 'I heard {}'.format(data.data))
+
+        if data.data:
+            self.counter += 1
+            print '+1'
+        else:
+            self.counter -= 1
+            print '-1'
+
+        print self.counter
         
-        self.speaking = data.data
+        self.speaking = self.counter != 0
+
         self.tool.speaking = self.speaking
 
     def classic_record(self, *args, **kwargs):
