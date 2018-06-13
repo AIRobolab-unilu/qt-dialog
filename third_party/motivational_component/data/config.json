@@ -1,0 +1,11 @@
+{
+"timer_motivational_callback": {"timer": 1, "active": false},
+"fatigue_task_timer_callback": {"timer": 10, "active": false},
+"curiosity_timer_callback": {"timer": 1, "active": false},
+"fatigue_human_rutine_timer_callback": {"timer": 60, "active": true},
+"fatigue_overall_timer_callback": {"timer": 20, "active": true},
+"frustration_timer_callback": {"timer": 5, "active": false},
+"pain_timer_callback": {"timer": 15, "active": true},
+"robot_batt_simulation_timer_callback": {"timer": 20, "active": true},
+"laptop_batt_simulation_timer_callback": {"timer": 60, "active": true}
+}

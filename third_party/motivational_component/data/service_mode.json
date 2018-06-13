@@ -1,0 +1,12 @@
+{
+"pain": {"threshold": 3},
+"frustration_time": {"threshold": 90},
+"max_curiosity_level": {"threshold": 90},
+"max_bumper_hits": {"threshold": 30},
+"morning_start": {"threshold": 8},
+"launch_start": {"threshold": 13},
+"siesta_start": {"threshold": 16},
+"siesta_end": {"threshold": 17},
+"afternoon_start": {"threshold": 17},
+"dinner_start": {"threshold": 21}
+}

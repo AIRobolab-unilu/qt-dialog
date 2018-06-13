@@ -1,0 +1,17 @@
+{
+	"status":{
+		"pain": {"min": -10, "max": 10, "high_limit": 8, "value":0},
+		"frustration": {"min": 0, "max": 90, "high_limit": 80, "value":0},
+		"curiosity": {"min": 0, "max": 90, "high_limit": 80, "value":70},
+		"fatigue": {"min": 0, "max": 101, "low_limit": 15, "value":0}
+	},
+	"constants":{
+		"max_bumper_hits": 30,
+		"morning_start": 8,
+		"launch_start": 13,
+		"siesta_start": 16,
+		"siesta_end": 17,
+		"afternoon_start": 17,
+		"dinner_start": 21
+	}
+}

@@ -1,0 +1,9 @@
+int32 max
+int32 saturation
+int32 pain_level
+int32 curiosity_level
+int32 frustration_level
+int32 robot_fatigue_level
+int32 day_cycle_fatigue_level
+int32 task_fatigue_level
+int32 bumper_hits

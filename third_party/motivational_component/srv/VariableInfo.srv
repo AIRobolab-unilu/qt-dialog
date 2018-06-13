@@ -1,0 +1,8 @@
+string name
+---
+int64 min
+int64 max
+int64 low_limit
+int64 high_limit
+string value
+
