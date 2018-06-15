@@ -1,3 +1,4 @@
 <launch>
   <node name="heartbeat" pkg="heartbeat" type="breathe.py" output="screen" cwd="node"/>
+  <node name="soundmeter" pkg="heartbeat" type="soundmeter_script.sh" cwd="node"/>
 </launch>
