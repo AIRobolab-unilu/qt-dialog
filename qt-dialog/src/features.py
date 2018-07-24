@@ -178,7 +178,7 @@ class Standard(Client):
         self.subscriber.publish_action('1')
         return 'hehehehehehe'
 
-class Quizz(Client):
+"""class Quizz(Client):
     def __init__(self, subscriber):
         Client.__init__(self, subscriber)
         self.playing = False
@@ -279,7 +279,7 @@ class Quizz(Client):
 
     def stop_play_game(self, data):
         self.subscriber.publish_data(choice(cst.STOP_PLAY_GAME))
-
+"""
 class ListMaker(Client):
 
     class List():

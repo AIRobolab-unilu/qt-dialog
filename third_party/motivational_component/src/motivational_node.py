@@ -118,7 +118,7 @@ class MotivationnalComponent() :
                 for key, variable in self.status.iteritems():
                     value = int(variable['value'])
 
-                    print key, variable
+                    #print key, variable
                     if value >= variable['max']:
                         self.pub_message.publish(MessageVariable('danger', 'high', key))
                     elif variable.get('high_limit') is not None:
@@ -143,7 +143,7 @@ class MotivationnalComponent() :
                 #print self.config
                 for key, value in self.config.iteritems():
                     if value['active'] and elapsed_time%value['timer'] == 0:
-                        print '{} => {}s'.format(key, value['timer'])
+                        #print '{} => {}s'.format(key, value['timer'])
 
                         getattr(self, key)()
 

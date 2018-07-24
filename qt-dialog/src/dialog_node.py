@@ -34,6 +34,7 @@ class Dialog():
         self.clients = {}
         self.handlers = []
         self.pub = rospy.Publisher('speaker', String, queue_size=10)
+        self.info_pub = rospy.Publisher('speaker/info', String, queue_size=10)
         self.pub_emotions = rospy.Publisher('emotions/setEmotion', String, queue_size=10)
         #self.pub = rospy.Publisher('/qt_tts/say', String, queue_size=10) 
         self.pub_2 = rospy.Publisher('speaking', Bool, queue_size=10)
@@ -82,6 +83,8 @@ class Dialog():
         self.sentences = self.load_json(cst.SENTENCES_JSON)
         #self.grammar = Grammar()
         self.punctuation = '!"#$%&()*+,-./:;<=>?@[\]^_`{|}~'
+
+        self.speaker_info = ""
 
         self.init_grammar()
 
@@ -153,6 +156,10 @@ class Dialog():
         
         self.process(data.data)
         self.last_sentence = data.data
+
+        self.info_pub.publish('{}:{}:{}:{}:{}:{}'.format(self.old_data, self.mode, self.calculated_data, self.candidates, self.optional_answers, self.chosen)
+                                .replace('\n', '').replace('\r', ''))
+
 
     def listener(self):
         rospy.Subscriber("reset", Bool, self.reset_callback)
@@ -245,11 +252,18 @@ class Dialog():
 
         best_score = -sys.maxint-1
         best_handler = None
+
+
         for handler, score in relevance.iteritems():
+
+
+            self.candidates += "{}/{}:".format(handler.callback, handler.keywords)
+
             if best_handler is None:
                 if score >= best_score:
                     best_score = score
                     best_handler = handler
+
 
             elif len(handler.keywords) > len(best_handler.keywords):
                 best_score = score
@@ -267,13 +281,28 @@ class Dialog():
             #best = None
         #print relevance
 
+        self.chosen = best_handler
+
         return best_handler
 
     def process(self, data):
 
+
+        self.candidates = ""
+        self.mode = ""
+        self.calculated_data = ""
+        self.optional_answers = ""
+        self.old_data = ""
+        self.chosen = ""
+
+
+
         data = self.pre_processing(data)
+
+
+
         #Save the data in case of it's not a pre-programmed sentence
-        old_data = data
+        self.old_data = data
         
         #sentence = self.sentences['sentences'].get(data)
         sentence = self.grammar.get(data)
@@ -305,31 +334,49 @@ class Dialog():
         
         if sentence is None:
             rospy.loginfo('The sentence is not in the static vocabulary ...')
-            data = old_data
+            data = self.old_data
 
             #Try to parse the sentence to retrieve keywords from the hot topic
-            if self.hot_topic:     
+            if self.hot_topic:
+
+                self.mode = "hot"
+
                 handler = self.get_best_handler(self.hot_topic, data)
                 if handler is not None:
                     #Reset the hot topic
                     self.hot_topic = []
                     self.counter += 1
-                    self.publish_data(handler.callback(data))
+
+                    answer = handler.callback(data)
+                    self.publish_data(answer)
+
+                    
+                    self.calculated_data = answer
                     return
 
                 self.try_again()
                 rospy.loginfo('The sentence does not match the hot topic ...')
+
+                self.calculated_data = "null"
                 return
 
             #Try to parse the sentence to retrieve keywords if there is clients
 
             if self.handlers:
+
+                self.mode = "passive"
+
                 handler = self.get_best_handler(self.handlers, data)
                 if handler is not None:
                         #self.publish_data(getattr(handler.client, handler.callback)())
                     self.counter += 1
-                    self.publish_data(handler.callback(data))
+
+                    answer = handler.callback(data)
+                    self.publish_data(answer)
                     #print '###############################################'
+
+                    
+                    self.calculated_data = answer
                     return
                     #except AttributeError:
                         #rospy.logfatal(rospy.get_caller_id() + ' The class has no method named "{}" !'.format(handler.callback))
@@ -340,6 +387,9 @@ class Dialog():
 
         if sentence is None:
             rospy.logwarn('Did not understand ...')
+
+            self.mode = "no_sentence"
+            self.calculated_data = data
             return
 
 
@@ -350,6 +400,8 @@ class Dialog():
 
         if sentence is None:
             rospy.logerror(rospy.get_caller_id() + ' There is no intent to match to this sentence ...')
+            self.mode = "no_intent"
+            self.calculated_data = "null"
             return
 
         for action in intent["actions"]:
@@ -358,6 +410,9 @@ class Dialog():
 
             if sentence is None:
                 rospy.logerror(rospy.get_caller_id() + ' There is no action match to this intent ...')
+
+                self.mode = "no_action"
+                self.calculated_data = str(action)
                 return
 
             #TODO: Do smth with the action
@@ -371,9 +426,12 @@ class Dialog():
         rospy.loginfo(rospy.get_caller_id() + ' QT says :' + str(intent["answer"]))
 
         text = intent["answer"]
+        self.mode = "static"
 
         if hasattr(text, '__iter__'):
+            self.optional_answers = '/'.join('"{0}"'.format(w) for w in text)
             text = choice(text)
+            self.chosen = text
 
         if text[0] == '$':
             tmp = text[1:].split('~')
@@ -382,18 +440,28 @@ class Dialog():
                 if c.__class__.__name__ == tmp[0]:
                     try:
                         text = getattr(c, tmp[1])()
+                        self.mode = "static_method"
                         #print '###############################################'
                         #return
                     except AttributeError:
                         rospy.logfatal(rospy.get_caller_id() + ' The class "{}" has no method named "{}" !'.format(tmp[0], tmp[1]))
+
+                        self.mode = "no_method"
+                        self.calculated_data = str(tmp[1])
                         return
 
             if text == intent["answer"]:
                 rospy.logfatal(rospy.get_caller_id() + ' The class "{}" does not exists in the module "features" !'.format(tmp[0], tmp[1]))
+
+                self.mode = "no_method"
+                self.calculated_data = str(tmp[1])
                 return
 
         self.counter += 1
+        
+        self.calculated_data = text
         self.publish_data(text)
+        
 
     def subscribe_to_topic(self, handler):
 
@@ -442,7 +510,8 @@ class Dialog():
         """
 
     def message_variable_callback(self, data):
-        self.publish_data('oops there is a {} | the {} of my {} has been reached'.format(data.type, data.position, data.name))
+        #self.publish_data('oops there is a {} | the {} of my {} has been reached'.format(data.type, data.position, data.name))
+        print 'oops there is a {} | the {} of my {} has been reached'.format(data.type, data.position, data.name)
 
 if __name__ == '__main__':
     Dialog()
