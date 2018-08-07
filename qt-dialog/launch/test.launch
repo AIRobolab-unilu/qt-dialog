@@ -1,4 +1,0 @@
-<launch>
-  <node name="dialog" pkg="qt-dialog" type="dialog_node.py" output="screen" cwd="node"/>
-  <node name="tests" pkg="qt-dialog" type="tests.py" output="screen" cwd="node"/>
-</launch>

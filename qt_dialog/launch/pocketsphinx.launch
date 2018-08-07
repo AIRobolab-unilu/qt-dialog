@@ -5,16 +5,16 @@
 	<param name="output_speaker" value="pico" />
 	
 	<include file="$(find pocketsphinx)/launch/asr.launch"> 
-		<arg name="dict" value="/home/airobolab/catkin_ws/src/qt-dialog/third party/pocketsphinx/data/3067.dic"/>
-		<arg name="gram" value="/home/airobolab/catkin_ws/src/qt-dialog/third party/pocketsphinx/data/3067"/>
+		<arg name="dict" value="/home/airobolab/catkin_ws/src/qt_dialog/third party/pocketsphinx/data/3067.dic"/>
+		<arg name="gram" value="/home/airobolab/catkin_ws/src/qt_dialog/third party/pocketsphinx/data/3067"/>
 		<arg name="rule" value="rule"/>
 		<arg name="grammar" value="asr"/>
 	</include>
 
 	<node name="motivational" pkg="motivational_component" type="motivational_node.py" output="screen" cwd="node"/>
 	<node name="emotions" pkg="qt_face" type="face_duration.py" output="screen" cwd="node"/>
-	<node name="tts" pkg="qt-dialog" type="tts_node.py" output="screen" cwd="node"/>
-	<node name="nlp" pkg="qt-dialog" type="nlp_node.py" output="screen" cwd="node"/>
-	<node name="dialog" pkg="qt-dialog" type="dialog_node.py" output="screen" cwd="node"/>
+	<node name="tts" pkg="qt_dialog" type="tts_node.py" output="screen" cwd="node"/>
+	<node name="nlp" pkg="qt_dialog" type="nlp_node.py" output="screen" cwd="node"/>
+	<node name="dialog" pkg="qt_dialog" type="dialog_node.py" output="screen" cwd="node"/>
 
 </launch>

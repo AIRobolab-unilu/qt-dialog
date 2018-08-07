@@ -1,9 +1,9 @@
 <launch> 
   
   
-  <node name="nlp" pkg="qt-dialog" type="nlp_node.py" output="screen" cwd="node"/>
+  <node name="nlp" pkg="qt_dialog" type="nlp_node.py" output="screen" cwd="node"/>
   
-  <node name="dialog" pkg="qt-dialog" type="dialog_node.py" output="screen" cwd="node"/>
+  <node name="dialog" pkg="qt_dialog" type="dialog_node.py" output="screen" cwd="node"/>
 
 
   <group>
