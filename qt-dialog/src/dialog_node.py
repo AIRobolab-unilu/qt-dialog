@@ -429,7 +429,7 @@ class Dialog():
         self.mode = "static"
 
         if hasattr(text, '__iter__'):
-            self.optional_answers = '/'.join('"{0}"'.format(w) for w in text)
+            self.optional_answers = '/'.join('{0}'.format(w) for w in text)
             text = choice(text)
             self.chosen = text
 
