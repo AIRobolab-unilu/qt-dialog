@@ -7,7 +7,7 @@ from std_msgs.msg import String, Bool
 import constants as cst
 import contextlib
 
-from random import choice
+from random import choice, randint
 #from jsgf import PublicRule, Literal, Grammar
 
 import json
@@ -157,6 +157,9 @@ class Dialog():
         self.process(data.data)
         self.last_sentence = data.data
 
+        self.candidates = self.candidates[:-1]
+        self.chosen = self.chosen[:-1]
+
         self.info_pub.publish('{}:{}:{}:{}:{}:{}'.format(self.old_data, self.mode, self.calculated_data, self.candidates, self.optional_answers, self.chosen)
                                 .replace('\n', '').replace('\r', ''))
 
@@ -252,36 +255,46 @@ class Dialog():
 
         best_score = -sys.maxint-1
         best_handler = None
+        counter = 0
+        chosen = 0
 
 
         for handler, score in relevance.iteritems():
 
 
-            self.candidates += "{}/{}:".format(handler.callback, handler.keywords)
+            self.candidates += "{}${}/".format(handler.callback.__name__, handler.keywords)
+            
 
             if best_handler is None:
                 if score >= best_score:
                     best_score = score
                     best_handler = handler
+                    chosen = counter
 
 
             elif len(handler.keywords) > len(best_handler.keywords):
                 best_score = score
                 best_handler = handler
+                chosen = counter
 
             elif len(handler.keywords) == len(best_handler.keywords):
                 if score >= best_score:
                     best_score = score
                     best_handler = handler
+                    chosen = counter
+
+            counter += 1
             
                     
+        
 
         #best = max(relevance, key=lambda key: relevance[key])
         #else:
             #best = None
         #print relevance
 
-        self.chosen = best_handler
+        #self.chosen = self.candidates.split("/")[chosen]
+        self.chosen += "{}/".format(chosen)
 
         return best_handler
 
@@ -428,10 +441,7 @@ class Dialog():
         text = intent["answer"]
         self.mode = "static"
 
-        if hasattr(text, '__iter__'):
-            self.optional_answers = '/'.join('{0}'.format(w) for w in text)
-            text = choice(text)
-            self.chosen = text
+        text = self.chose_and_fill_status(text)
 
         if text[0] == '$':
             tmp = text[1:].split('~')
@@ -461,6 +471,20 @@ class Dialog():
         
         self.calculated_data = text
         self.publish_data(text)
+
+    def chose_and_fill_status(self, text):
+        
+        if hasattr(text, '__iter__'):
+            self.optional_answers = '/'.join('{0}'.format(w) for w in text)
+            n = randint(0, len(text)-1)
+            text = text[n]
+        else:
+            self.optional_answers = text
+            n = 0
+
+        self.chosen += '{}/'.format(n)
+        #self.chosen = text
+        return text
         
 
     def subscribe_to_topic(self, handler):

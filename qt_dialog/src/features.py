@@ -147,6 +147,7 @@ class Client():
     def cancel(self):
         pass
 
+
 class Standard(Client):
 
     def joke(self):
@@ -158,25 +159,25 @@ class Standard(Client):
                     return line
 
     def repeat(self):
-         return cst.REPEAT.format(self.subscriber.last_answer)
+         return self.subscriber.chose_and_fill_status(cst.REPEAT.format(self.subscriber.last_answer))
 
     def what_heard(self):
-        return cst.HEARD.format(self.subscriber.last_sentence)
+        return self.subscriber.chose_and_fill_status(cst.HEARD.format(self.subscriber.last_sentence))
 
     def time(self):
         now = datetime.datetime.now()
-        return cst.TIME.format(now.hour, now.minute)
+        return self.subscriber.chose_and_fill_status(cst.TIME.format(now.hour, now.minute))
 
     def date(self):
         now = datetime.datetime.now()
-        return cst.DATE.format(now.day, calendar.month_name[now.month])
+        return self.subscriber.chose_and_fill_status(cst.DATE.format(now.day, calendar.month_name[now.month]))
 
     def reset(self):
-        return cst.RESET
+        return self.subscriber.chose_and_fill_status(cst.RESET)
 
     def smile(self):
         self.subscriber.publish_action('1')
-        return 'hehehehehehe'
+        return self.subscriber.chose_and_fill_status('hehehehehehe')
 
 """class Quizz(Client):
     def __init__(self, subscriber):
@@ -339,21 +340,21 @@ class ListMaker(Client):
         if self.lists.get(self.current_name) is not None:
             self.subscriber.subscribe_to_topic(KeywordsHandler(self.select_existant_callback, (('select', 'ok', 'yes'),)))
             self.subscriber.subscribe_to_topic(KeywordsHandler(self.what_name_callback, (('another', 'no', 'not', 'other'),)))
-            return cst.EXIST_LIST.format(self.current_name)
+            return self.subscriber.chose_and_fill_status(cst.EXIST_LIST.format(self.current_name))
 
 
-        return cst.CREATE_LIST_1.format(self.current_name)
+        return self.subscriber.chose_and_fill_status(cst.CREATE_LIST_1.format(self.current_name))
 
     def create_callback_with_name(self, name):
-        return cst.CREATE_LIST_1.format(name)
+        return self.subscriber.chose_and_fill_status(cst.CREATE_LIST_1.format(name))
 
     def what_name_callback(self):
         self.subscriber.subscribe_to_topic(KeywordsHandler(self.create_callback_with_name, (('*',),), extendable=True))
         self.asking = True
-        return cst.ASK_NAME
+        return self.subscriber.chose_and_fill_status(cst.ASK_NAME)
 
     def select_existant_callback(self):
-        return cst.CREATE_LIST_1.format(self.current_name)
+        return self.subscriber.chose_and_fill_status(cst.CREATE_LIST_1.format(self.current_name))
 
     def add_callback(self):
         self.subscribe(keywords=self.keywords, data='what is the name of this list')
@@ -385,7 +386,7 @@ class Timer(Client):
     def partial_create_callback(self, data):
         #self.subscribe(self.create_callback, ('hour', 'minute', 'second'))
         self.subscriber.subscribe_to_topic(KeywordsHandler(self.create_callback, (('hour', 'minute', 'second'),), extendable=True))
-        return cst.ASK_TIME
+        return self.subscriber.chose_and_fill_status(cst.ASK_TIME)
 
     def timer_callback(self):
         self.subscriber.publish_data(cst.TIMER_END)
@@ -414,13 +415,13 @@ class Timer(Client):
 
             if word in self.keywords:
                 if index == 0:
-                    return cst.ERROR_FORMAT_INDEX
+                    return self.subscriber.chose_and_fill_status(cst.ERROR_FORMAT_INDEX)
 
                 try:
                     duration[word] = int(data[index-1])
                     
                 except ValueError:
-                    return cst.ERROR_FORMAT
+                    return self.subscriber.chose_and_fill_status(cst.ERROR_FORMAT)
 
         time = (duration['hour']*60+duration['minute'])*60+duration['second']
         self.timer = threading.Timer(time, self.timer_callback)
@@ -431,7 +432,7 @@ class Timer(Client):
 
 
 
-        return cst.TIMER_SET.format(duration['hour'], duration['minute'], duration['second'])
+        return self.subscriber.chose_and_fill_status(cst.TIMER_SET.format(duration['hour'], duration['minute'], duration['second']))
 
 class ChitChat(Client):
     def __init__(self, subscriber):
@@ -447,26 +448,26 @@ class ChitChat(Client):
     def good(self, sentence):
         if is_negative(sentence):
             self.subscriber.publish_action("3")
-            return choice(cst.FEELING_BAD)
+            return self.subscriber.chose_and_fill_status(cst.FEELING_BAD)
 
         self.subscriber.publish_action("2")
-        return choice(cst.FEELING_GOOD)
+        return self.subscriber.chose_and_fill_status(cst.FEELING_GOOD)
 
     def bad(self, sentence):
         if is_negative(sentence):
             self.subscriber.publish_action("2")
-            return choice(cst.FEELING_GOOD)
+            return self.subscriber.chose_and_fill_status(cst.FEELING_GOOD)
 
         self.subscriber.publish_action("3")
-        return choice(cst.FEELING_BAD)
+        return self.subscriber.chose_and_fill_status(cst.FEELING_BAD)
 
     def angry(self, sentence):
         self.subscriber.publish_action("7")
-        return choice(cst.FEELING_ANGRY)
+        return self.subscriber.chose_and_fill_status(cst.FEELING_ANGRY)
 
     def ask(self):
         #Action already realised
-        return choice(cst.ROBOT_FEELINGS)
+        return self.subscriber.chose_and_fill_status(cst.ROBOT_FEELINGS)
 
 class Conversation(Client):
     def __init__(self, subscriber):
@@ -487,7 +488,7 @@ class Conversation(Client):
         self.counter = self.subscriber.counter
 
         self.subscriber.publish_action("2")
-        return choice(cst.START)
+        return self.subscriber.chose_and_fill_status(cst.START)
 
     def end(self, data):
         if self.timer is None:
@@ -501,7 +502,7 @@ class Conversation(Client):
         self.timer = None
 
         self.subscriber.publish_action("6")
-        return choice(cst.END1) + ' | ' + cst.END2.format(hours, minutes, seconds, self.subscriber.counter-self.counter)
+        return self.subscriber.chose_and_fill_status(choice(cst.END1) + ' | ' + cst.END2.format(hours, minutes, seconds, self.subscriber.counter-self.counter))
     
 
 if __name__ == '__main__':
