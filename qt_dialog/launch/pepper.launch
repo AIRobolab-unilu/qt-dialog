@@ -9,10 +9,10 @@
 	<include file="$(find naoqi_sensors_py)/launch/microphone.launch"/>
 	
 	<node name="motivational" pkg="motivational_component" type="motivational_node.py" output="screen" cwd="node"/>
-	<node name="tts" pkg="qt-dialog" type="tts_node.py" output="screen" cwd="node"/>
-	<node name="stt" pkg="qt-dialog" type="stt_node.py" output="screen" cwd="node"/>
-	<node name="nlp" pkg="qt-dialog" type="nlp_node.py" output="screen" cwd="node"/>
-	<node name="vad" pkg="qt-dialog" type="vad_node.py" output="screen" cwd="node"/>
-	<node name="dialog" pkg="qt-dialog" type="dialog_node.py" output="screen" cwd="node"/>
+	<node name="tts" pkg="qt_dialog" type="tts_node.py" output="screen" cwd="node"/>
+	<node name="stt" pkg="qt_dialog" type="stt_node.py" output="screen" cwd="node"/>
+	<node name="nlp" pkg="qt_dialog" type="nlp_node.py" output="screen" cwd="node"/>
+	<node name="vad" pkg="qt_dialog" type="vad_node.py" output="screen" cwd="node"/>
+	<node name="dialog" pkg="qt_dialog" type="dialog_node.py" output="screen" cwd="node"/>
 
 </launch>
